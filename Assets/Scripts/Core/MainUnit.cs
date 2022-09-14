@@ -7,9 +7,8 @@ namespace Core
     {
         public float Health => _health;
         public float MaxHealth => _maxHealth;
-        public Sprite Icon => _icon;
-
         public Transform PivotPoint => _pivotPoint;
+        public Sprite Icon => _icon;
 
         [SerializeField] private float _maxHealth = 100;
         [SerializeField] private Sprite _icon;

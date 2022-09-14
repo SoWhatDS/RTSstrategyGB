@@ -1,5 +1,6 @@
+﻿using Abstractions;
 
-public interface IAttackable : IHelthHolder
+public interface IAttackable : IHealthHolder
 {
-   
+    
 }

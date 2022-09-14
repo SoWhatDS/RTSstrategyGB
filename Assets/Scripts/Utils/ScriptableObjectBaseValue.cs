@@ -1,14 +1,22 @@
 using System;
 using UnityEngine;
+using UserControlSystem;
 
-public abstract class ScriptableObjectValueBase<T> : ScriptableObject
+namespace Utils
 {
-    public T CurrentValue { get; private set; }
-    public Action<T> OnNewValue;
-    public void SetValue(T value)
+    public abstract class ScriptableObjectValueBase<T> : ScriptableObject, IAwaitable<T>
     {
-        CurrentValue = value;
-        OnNewValue?.Invoke(value);
+        public T CurrentValue { get; private set; }
+        public Action<T> OnNewValue;
+        public virtual void SetValue(T value)
+        {
+            CurrentValue = value;
+            OnNewValue?.Invoke(value);
+        }
+
+        public IAwaiter<T> GetAwaiter()
+        {
+            return new NewValueNotifier<T>(this);
+        }
     }
 }
-
