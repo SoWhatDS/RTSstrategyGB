@@ -1,12 +1,12 @@
-﻿using Abstractions;
-using System;
+﻿using System;
+using Abstractions;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace UserControlSystem
+namespace UserControlSystem.UI.Presenter
 {
     public sealed class BottomLeftPresenter : MonoBehaviour
     {
@@ -14,13 +14,12 @@ namespace UserControlSystem
         [SerializeField] private Slider _healthSlider;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _sliderBackground;
-        [SerializeField] private Image _sliderFillImage;    
+        [SerializeField] private Image _sliderFillImage;
 
         [Inject] private IObservable<ISelectable> _selectedValues;
 
         private void Start() => _selectedValues.Subscribe(ONSelected);
-       
-        
+
         private void ONSelected(ISelectable selected)
         {
             _selectedImage.enabled = selected != null;
