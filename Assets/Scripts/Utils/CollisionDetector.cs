@@ -1,14 +1,17 @@
-using System;
+﻿using System;
 using UniRx;
 using UnityEngine;
 
-
-public class CollisionDetector : MonoBehaviour
+namespace Utils
 {
-    public IObservable<Collision> Collisions => _collisions;
-    private Subject<Collision> _collisions = new Subject<Collision>();
-    private void OnCollisionStay(Collision collision)
+    public class CollisionDetector : MonoBehaviour
     {
-        _collisions.OnNext(collision);
+        public IObservable<Collision> Collisions => _collisions;
+        private Subject<Collision> _collisions = new Subject<Collision>();
+
+        private void OnCollisionStay(Collision collision)
+        {
+            _collisions.OnNext(collision);
+        }
     }
 }

@@ -1,10 +1,15 @@
+﻿using Abstractions;
 using UnityEngine;
-public class SetRallyPointCommand : ISetRallyPointCommand
+
+namespace UserControlSystem.CommandsRealization
 {
-    public Vector3 RallyPoint { get; }
-    public SetRallyPointCommand(Vector3 rallyPoint)
+    public sealed class SetRallyPointCommand : ISetRallyPointCommand
     {
-        RallyPoint = rallyPoint;
+        public Vector3 RallyPoint { get; }
+
+        public SetRallyPointCommand(Vector3 rallyPoint)
+        {
+            RallyPoint = rallyPoint;
+        }
     }
 }
-

@@ -1,4 +1,4 @@
-using Abstractions.Commands;
+﻿using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
 using UniRx;
 using UnityEngine;
@@ -6,31 +6,31 @@ using Zenject;
 
 namespace Core
 {
-    public class ChomperCommandsQueue : MonoBehaviour, ICommandsQueue
+    public sealed class ChomperCommandsQueue : MonoBehaviour, ICommandsQueue
     {
         [Inject] CommandExecutorBase<IMoveCommand> _moveCommandExecutor;
         [Inject] CommandExecutorBase<IPatrolCommand> _patrolCommandExecutor;
         [Inject] CommandExecutorBase<IAttackCommand> _attackCommandExecutor;
         [Inject] CommandExecutorBase<IStopCommand> _stopCommandExecutor;
-
+        
         private ReactiveCollection<ICommand> _innerCollection = new ReactiveCollection<ICommand>();
 
         [Inject]
         private void Init()
         {
             _innerCollection
-            .ObserveAdd().Subscribe(onNewCommand).AddTo(this);
+                .ObserveAdd().Subscribe(ONNewCommand).AddTo(this);
         }
 
-        private void onNewCommand(ICommand command, int index)
+        private void ONNewCommand(ICommand command, int index)
         {
             if (index == 0)
             {
-                executeCommand(command);
+                ExecuteCommand(command);
             }
         }
 
-        private async void executeCommand(ICommand command)
+        private async void ExecuteCommand(ICommand command)
         {
             await _moveCommandExecutor.TryExecuteCommand(command);
             await _patrolCommandExecutor.TryExecuteCommand(command);
@@ -40,14 +40,14 @@ namespace Core
             {
                 _innerCollection.RemoveAt(0);
             }
-            checkTheQueue();
+            CheckTheQueue();
         }
 
-        private void checkTheQueue()
+        private void CheckTheQueue()
         {
             if (_innerCollection.Count > 0)
             {
-                executeCommand(_innerCollection[0]);
+                ExecuteCommand(_innerCollection[0]);
             }
         }
 
@@ -60,9 +60,7 @@ namespace Core
         public void Clear()
         {
             _innerCollection.Clear();
-            //_stopCommandExecutor.ExecuteSpecificCommand(new StopCommand());
+            _stopCommandExecutor.ExecuteSpecificCommand(new StopCommand());
         }
     }
 }
-
-

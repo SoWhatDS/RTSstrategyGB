@@ -1,4 +1,5 @@
 ﻿using System;
+using Abstractions;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace UserControlSystem
 
         private bool _commandIsPending;
 
-        public void OnCommandButtonClicked(ICommandExecutor commandExecutor,ICommandsQueue commandsQueue)
+        public void OnCommandButtonClicked(ICommandExecutor commandExecutor, ICommandsQueue commandsQueue)
         {
             if (_commandIsPending)
             {
@@ -29,22 +30,16 @@ namespace UserControlSystem
             }
             _commandIsPending = true;
             OnCommandAccepted?.Invoke(commandExecutor);
-            _unitProducer.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
-            _attacker.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
-            _stopper.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
-            _mover.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
-            _patroller.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
-            _setRally.ProcessCommandExecutor(commandExecutor, command =>
-            executeCommandWrapper(command, commandsQueue));
+
+            _unitProducer.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
+            _attacker.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
+            _stopper.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
+            _mover.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
+            _patroller.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
+            _setRally.ProcessCommandExecutor(commandExecutor, command => ExecuteCommandWrapper(command, commandsQueue));
         }
 
-
-        public void executeCommandWrapper(object command, ICommandsQueue commandsQueue)
+        public void ExecuteCommandWrapper(object command, ICommandsQueue commandsQueue)
         {
             if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
             {
@@ -54,7 +49,6 @@ namespace UserControlSystem
             _commandIsPending = false;
             OnCommandSent?.Invoke();
         }
-
 
         public void OnSelectionChanged()
         {

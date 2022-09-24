@@ -5,7 +5,6 @@ namespace Abstractions.Commands
 {
     public abstract class CommandExecutorBase<T> : MonoBehaviour, ICommandExecutor<T> where T : class, ICommand
     {
-
         public async Task TryExecuteCommand(object command)
         {
             var specificCommand = command as T;
@@ -18,5 +17,3 @@ namespace Abstractions.Commands
         public abstract Task ExecuteSpecificCommand(T command);
     }
 }
-
-

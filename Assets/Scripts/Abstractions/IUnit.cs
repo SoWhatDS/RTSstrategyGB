@@ -1,4 +1,7 @@
-public interface IUnit 
+﻿namespace Abstractions
 {
-   
+    public interface IUnit
+    {
+        
+    }
 }

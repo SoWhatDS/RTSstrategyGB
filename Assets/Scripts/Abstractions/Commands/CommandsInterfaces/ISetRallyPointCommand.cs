@@ -1,8 +1,10 @@
-using Abstractions.Commands;
+﻿using Abstractions.Commands;
 using UnityEngine;
 
-public interface ISetRallyPointCommand : ICommand
+namespace Abstractions
 {
-    Vector3 RallyPoint { get; }
+    public interface ISetRallyPointCommand : ICommand
+    {
+        Vector3 RallyPoint { get; }
+    }
 }
-

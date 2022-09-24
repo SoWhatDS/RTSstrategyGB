@@ -1,7 +1,8 @@
-﻿using Abstractions;
+﻿using System.Threading.Tasks;
+using Abstractions;
 using Abstractions.Commands;
 using Abstractions.Commands.CommandsInterfaces;
-using System.Threading.Tasks;
+using Assets.Scripts.Core;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -30,18 +31,14 @@ namespace Core.CommandExecutors
             innerTask.TimeLeft -= Time.deltaTime;
             if (innerTask.TimeLeft <= 0)
             {
-                removeTaskAtIndex(0);
-                var instance = _diContainer.InstantiatePrefab(innerTask.UnitPrefab, transform.position,Quaternion.identity, _unitsParent);
-                var queue = instance.GetComponent<ICommandsQueue>();
-                var mainBuilding = GetComponent<MainBuilding>();
-                queue.EnqueueCommand(new MoveCommand(mainBuilding.RallyPoint));
-
+                RemoveTaskAtIndex(0);
+                Instantiate(innerTask.UnitPrefab, new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)), Quaternion.identity, _unitsParent);
             }
         }
 
-        public void Cancel(int index) => removeTaskAtIndex(index);
+        public void Cancel(int index) => RemoveTaskAtIndex(index);
 
-        private void removeTaskAtIndex(int index)
+        private void RemoveTaskAtIndex(int index)
         {
             for (int i = index; i < _queue.Count - 1; i++)
             {
@@ -52,7 +49,12 @@ namespace Core.CommandExecutors
 
         public override async Task ExecuteSpecificCommand(IProduceUnitCommand command)
         {
-            _queue.Add(new UnitProductionTask(command.ProductionTime, command.Icon, command.UnitPrefab, command.UnitName));
+            var instance = _diContainer.InstantiatePrefab(command.UnitPrefab, transform.position, Quaternion.identity, _unitsParent);
+            var queue = instance.GetComponent<ICommandsQueue>();
+            var mainBuilding = GetComponent<MainBuilding>();
+            var factionMember = instance.GetComponent<FactionMember>();
+            factionMember.SetFaction(GetComponent<FactionMember>().FactionId);
+            queue.EnqueueCommand(new MoveCommand(mainBuilding.RallyPoint));
         }
     }
 }

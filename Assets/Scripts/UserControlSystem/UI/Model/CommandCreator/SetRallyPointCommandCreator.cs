@@ -1,9 +1,11 @@
+﻿using Abstractions;
 using UnityEngine;
-using UserControlSystem;
+using UserControlSystem.CommandsRealization;
 
-public class SetRallyPointCommandCreator : CancellableCommandCreatorBase<ISetRallyPointCommand, Vector3>
+namespace UserControlSystem
 {
-    protected override ISetRallyPointCommand CreateCommand(Vector3 argument) => new SetRallyPointCommand(argument);
-    
+    public sealed class SetRallyPointCommandCreator : CancellableCommandCreatorBase<ISetRallyPointCommand, Vector3>
+    {
+        protected override ISetRallyPointCommand CreateCommand(Vector3 argument) => new SetRallyPointCommand(argument);
+    }
 }
-

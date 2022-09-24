@@ -1,11 +1,14 @@
+﻿using System.Threading.Tasks;
+using Abstractions;
 using Abstractions.Commands;
-using System.Threading.Tasks;
 
-public class SetRallyPointCommandExecutor : CommandExecutorBase<ISetRallyPointCommand>
+namespace Core.CommandExecutors
 {
-    public override async Task ExecuteSpecificCommand(ISetRallyPointCommand
-    command)
+    public class SetRallyPointCommandExecutor : CommandExecutorBase<ISetRallyPointCommand>
     {
-        GetComponent<MainBuilding>().RallyPoint = command.RallyPoint;
+        public override async Task ExecuteSpecificCommand(ISetRallyPointCommand command)
+        {
+            GetComponent<MainBuilding>().RallyPoint = command.RallyPoint;
+        }
     }
 }

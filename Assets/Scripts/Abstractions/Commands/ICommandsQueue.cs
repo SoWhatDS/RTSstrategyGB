@@ -1,6 +1,8 @@
-
-public interface ICommandsQueue
+﻿namespace Abstractions.Commands
 {
-    void EnqueueCommand(object command);
-    void Clear();
+    public interface ICommandsQueue
+    {
+        void EnqueueCommand(object command);
+        void Clear();
+    }
 }
